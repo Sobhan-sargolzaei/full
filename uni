@@ -1,10 +1,7 @@
-import numpy as np
+   import numpy as np
 import cv2
 
 def contrast_stretching_loop(image, l_min=0, l_max=255):
-    """
-    اعمال کنتراست استرچینگ با استفاده از حلقه
-    """
     i_min, i_max = np.min(image), np.max(image)
     rows, cols = image.shape
     result = np.zeros_like(image, dtype=np.uint8)
@@ -15,28 +12,19 @@ def contrast_stretching_loop(image, l_min=0, l_max=255):
 
     return result
 
-def contrast_stretching_matrix(image, l_min=0, l_max=255):
-    """
-    اعمال کنتراست استرچینگ با استفاده از ماتریس
-    """
-    i_min, i_max = np.min(image), np.max(image)
-    result = ((image - i_min) / (i_max - i_min)) * (l_max - l_min) + l_min
-    return result.astype(np.uint8)
+# بارگذاری تصویر
+image = cv2.imread("test.jpg", cv2.IMREAD_GRAYSCALE)
 
-# تست برنامه
-if __name__ == "__main__":
-    # بارگذاری تصویر
-    image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+# بررسی خطا در بارگذاری تصویر
+if image is None:
+    print("Error: Unable to load the image. Please check the path or file format.")
+    exit()
 
-    # اجرای روش حلقه
-    stretched_loop = contrast_stretching_loop(image)
+# اجرای روش حلقه
+stretched_loop = contrast_stretching_loop(image)
 
-    # اجرای روش ماتریسی
-    stretched_matrix = contrast_stretching_matrix(image)
-
-    # نمایش تصاویر
-    cv2.imshow("Original", image)
-    cv2.imshow("Contrast Stretching - Loop", stretched_loop)
-    cv2.imshow("Contrast Stretching - Matrix", stretched_matrix)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+# نمایش تصویر اصلی و اصلاح‌شده
+cv2.imshow("Original", image)
+cv2.imshow("Contrast Stretched - Loop", stretched_loop)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
